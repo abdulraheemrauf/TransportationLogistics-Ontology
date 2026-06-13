@@ -1,0 +1,1040 @@
+<?xml version="1.0"?>
+<!DOCTYPE rdf:RDF [
+    <!ENTITY owl "http://www.w3.org/2002/07/owl#" >
+    <!ENTITY xsd "http://www.w3.org/2001/XMLSchema#" >
+    <!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#" >
+    <!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#" >
+    <!ENTITY tl "http://www.example.org/transportlogistics#" >
+]>
+
+<!--
+    ============================================================
+    Transportation and Logistics Ontology
+    OWL 2.0 — RDF/XML Syntax
+    Compatible with Protégé 5.x (Protégé-2000 series)
+    ============================================================
+    Author  : Student Exam Submission
+    Course  : Knowledge Representation / Ontology Engineering
+    Professor: Matteo Cristani
+    Date    : 2026
+    ============================================================
+-->
+
+<rdf:RDF
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns:owl="http://www.w3.org/2002/07/owl#"
+    xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+    xmlns:tl="http://www.example.org/transportlogistics#"
+    xml:base="http://www.example.org/transportlogistics">
+
+    <!-- ======================================================
+         ONTOLOGY DECLARATION
+         ====================================================== -->
+    <owl:Ontology rdf:about="http://www.example.org/transportlogistics">
+        <rdfs:label xml:lang="en">Transportation and Logistics Ontology</rdfs:label>
+        <rdfs:comment xml:lang="en">
+            An OWL 2.0 ontology modelling a Transportation and Logistics ecosystem including
+            vehicles, routes, facilities, shipments, personnel, tracking events,
+            and logistics management services.
+        </rdfs:comment>
+        <owl:versionInfo>1.0</owl:versionInfo>
+    </owl:Ontology>
+
+
+    <!-- ======================================================
+         CLASSES — TOP LEVEL
+         ====================================================== -->
+
+    <!-- PhysicalEntity: anything that exists in the physical world -->
+    <owl:Class rdf:about="&tl;PhysicalEntity">
+        <rdfs:label xml:lang="en">Physical Entity</rdfs:label>
+        <rdfs:comment xml:lang="en">The root class for all physical things in the logistics network.</rdfs:comment>
+    </owl:Class>
+
+    <!-- Location -->
+    <owl:Class rdf:about="&tl;Location">
+        <rdfs:label xml:lang="en">Location</rdfs:label>
+        <rdfs:comment xml:lang="en">A spatial region that is part of or associated with the logistics network.</rdfs:comment>
+        <rdfs:subClassOf rdf:resource="&tl;PhysicalEntity"/>
+    </owl:Class>
+
+    <!-- Vehicle -->
+    <owl:Class rdf:about="&tl;Vehicle">
+        <rdfs:label xml:lang="en">Vehicle</rdfs:label>
+        <rdfs:comment xml:lang="en">Any transport unit used to carry goods or passengers.</rdfs:comment>
+        <rdfs:subClassOf rdf:resource="&tl;PhysicalEntity"/>
+    </owl:Class>
+
+    <!-- Person -->
+    <owl:Class rdf:about="&tl;Person">
+        <rdfs:label xml:lang="en">Person</rdfs:label>
+        <rdfs:comment xml:lang="en">A human being who participates in the logistics operation.</rdfs:comment>
+        <rdfs:subClassOf rdf:resource="&tl;PhysicalEntity"/>
+    </owl:Class>
+
+    <!-- AbstractEntity: non-physical concepts -->
+    <owl:Class rdf:about="&tl;AbstractEntity">
+        <rdfs:label xml:lang="en">Abstract Entity</rdfs:label>
+        <rdfs:comment xml:lang="en">The root class for non-physical concepts such as shipments, routes, contracts, and services.</rdfs:comment>
+    </owl:Class>
+
+
+    <!-- ======================================================
+         CLASSES — LOCATION HIERARCHY
+         ====================================================== -->
+
+    <owl:Class rdf:about="&tl;LogisticsNetwork">
+        <rdfs:label xml:lang="en">Logistics Network</rdfs:label>
+        <rdfs:comment xml:lang="en">The entire logistics and transportation network of an organisation.</rdfs:comment>
+        <rdfs:subClassOf rdf:resource="&tl;Location"/>
+    </owl:Class>
+
+    <owl:Class rdf:about="&tl;Region">
+        <rdfs:label xml:lang="en">Region</rdfs:label>
+        <rdfs:comment xml:lang="en">A broad geographic or administrative area within the logistics network.</rdfs:comment>
+        <rdfs:subClassOf rdf:resource="&tl;Location"/>
+    </owl:Class>
+
+    <owl:Class rdf:about="&tl;Facility">
+        <rdfs:label xml:lang="en">Facility</rdfs:label>
+        <rdfs:comment xml:lang="en">A fixed installation used for logistics operations.</rdfs:comment>
+        <rdfs:subClassOf rdf:resource="&tl;Location"/>
+    </owl:Class>
+
+    <!-- Facility subclasses -->
+    <owl:Class rdf:about="&tl;Warehouse">
+        <rdfs:label xml:lang="en">Warehouse</rdfs:label>
+        <rdfs:comment xml:lang="en">A large storage facility for goods awaiting distribution.</rdfs:comment>
+        <rdfs:subClassOf rdf:resource="&tl;Facility"/>
+    </owl:Class>
+
+    <owl:Class rdf:about="&tl;DistributionCenter">
+        <rdfs:label xml:lang="en">Distribution Center</rdfs:label>
+        <rdfs:comment xml:lang="en">A facility that receives, sorts, and dispatches goods to destinations.</rdfs:comment>
+        <rdfs:subClassOf rdf:resource="&tl;Facility"/>
+    </owl:Class>
+
+    <owl:Class rdf:about="&tl;Port">
+        <rdfs:label xml:lang="en">Port</rdfs:label>
+        <rdfs:comment xml:lang="en">A maritime or air facility for loading and unloading cargo.</rdfs:comment>
+        <rdfs:subClassOf rdf:resource="&tl;Facility"/>
+    </owl:Class>
+
+    <owl:Class rdf:about="&tl;CustomsCheckpoint">
+        <rdfs:label xml:lang="en">Customs Checkpoint</rdfs:label>
+        <rdfs:comment xml:lang="en">A border control facility where goods are inspected and cleared.</rdfs:comment>
+        <rdfs:subClassOf rdf:resource="&tl;Facility"/>
+    </owl:Class>
+
+    <owl:Class rdf:about="&tl;DeliveryHub">
+        <rdfs:label xml:lang="en">Delivery Hub</rdfs:label>
+        <rdfs:comment xml:lang="en">A local facility for last-mile parcel sorting and dispatch.</rdfs:comment>
+        <rdfs:subClassOf rdf:resource="&tl;Facility"/>
+    </owl:Class>
+
+    <owl:Class rdf:about="&tl;RoadSegment">
+        <rdfs:label xml:lang="en">Road Segment</rdfs:label>
+        <rdfs:comment xml:lang="en">A section of road or motorway used in transportation routes.</rdfs:comment>
+        <rdfs:subClassOf rdf:resource="&tl;Location"/>
+    </owl:Class>
+
+
+    <!-- ======================================================
+         CLASSES — VEHICLE HIERARCHY
+         ====================================================== -->
+
+    <!-- GroundVehicle -->
+    <owl:Class rdf:about="&tl;GroundVehicle">
+        <rdfs:label xml:lang="en">Ground Vehicle</rdfs:label>
+        <rdfs:comment xml:lang="en">A vehicle that travels on roads or railways.</rdfs:comment>
+        <rdfs:subClassOf rdf:resource="&tl;Vehicle"/>
+    </owl:Class>
+
+    <owl:Class rdf:about="&tl;Truck">
+        <rdfs:label xml:lang="en">Truck</rdfs:label>
+        <rdfs:comment xml:lang="en">A heavy goods vehicle used for long-distance or bulk cargo transport.</rdfs:comment>
+        <rdfs:subClassOf rdf:resource="&tl;GroundVehicle"/>
+    </owl:Class>
+
+    <owl:Class rdf:about="&tl;Van">
+        <rdfs:label xml:lang="en">Van</rdfs:label>
+        <rdfs:comment xml:lang="en">A light commercial vehicle used for urban or last-mile delivery.</rdfs:comment>
+        <rdfs:subClassOf rdf:resource="&tl;GroundVehicle"/>
+    </owl:Class>
+
+    <owl:Class rdf:about="&tl;TrainWagon">
+        <rdfs:label xml:lang="en">Train Wagon</rdfs:label>
+        <rdfs:comment xml:lang="en">A rail freight wagon for bulk or containerised goods.</rdfs:comment>
+        <rdfs:subClassOf rdf:resource="&tl;GroundVehicle"/>
+    </owl:Class>
+
+    <owl:Class rdf:about="&tl;RefrigeratedVehicle">
+        <rdfs:label xml:lang="en">Refrigerated Vehicle</rdfs:label>
+        <rdfs:comment xml:lang="en">A temperature-controlled vehicle for perishable goods.</rdfs:comment>
+        <rdfs:subClassOf rdf:resource="&tl;GroundVehicle"/>
+    </owl:Class>
+
+    <!-- AirVehicle -->
+    <owl:Class rdf:about="&tl;AirVehicle">
+        <rdfs:label xml:lang="en">Air Vehicle</rdfs:label>
+        <rdfs:comment xml:lang="en">A vehicle that transports cargo through the air.</rdfs:comment>
+        <rdfs:subClassOf rdf:resource="&tl;Vehicle"/>
+        <!-- AirVehicle and GroundVehicle are disjoint -->
+        <owl:disjointWith rdf:resource="&tl;GroundVehicle"/>
+    </owl:Class>
+
+    <owl:Class rdf:about="&tl;CargoPlane">
+        <rdfs:label xml:lang="en">Cargo Plane</rdfs:label>
+        <rdfs:comment xml:lang="en">An aircraft designed for freight transport.</rdfs:comment>
+        <rdfs:subClassOf rdf:resource="&tl;AirVehicle"/>
+    </owl:Class>
+
+    <owl:Class rdf:about="&tl;DeliveryDrone">
+        <rdfs:label xml:lang="en">Delivery Drone</rdfs:label>
+        <rdfs:comment xml:lang="en">An unmanned aerial vehicle for last-mile parcel delivery.</rdfs:comment>
+        <rdfs:subClassOf rdf:resource="&tl;AirVehicle"/>
+    </owl:Class>
+
+    <!-- MaritimeVehicle -->
+    <owl:Class rdf:about="&tl;MaritimeVehicle">
+        <rdfs:label xml:lang="en">Maritime Vehicle</rdfs:label>
+        <rdfs:comment xml:lang="en">A vessel that transports cargo over water.</rdfs:comment>
+        <rdfs:subClassOf rdf:resource="&tl;Vehicle"/>
+        <owl:disjointWith rdf:resource="&tl;GroundVehicle"/>
+        <owl:disjointWith rdf:resource="&tl;AirVehicle"/>
+    </owl:Class>
+
+    <owl:Class rdf:about="&tl;ContainerShip">
+        <rdfs:label xml:lang="en">Container Ship</rdfs:label>
+        <rdfs:comment xml:lang="en">A large ocean-going vessel that carries intermodal containers.</rdfs:comment>
+        <rdfs:subClassOf rdf:resource="&tl;MaritimeVehicle"/>
+    </owl:Class>
+
+    <owl:Class rdf:about="&tl;Barge">
+        <rdfs:label xml:lang="en">Barge</rdfs:label>
+        <rdfs:comment xml:lang="en">A flat-bottomed vessel used for inland waterway freight.</rdfs:comment>
+        <rdfs:subClassOf rdf:resource="&tl;MaritimeVehicle"/>
+    </owl:Class>
+
+    <!-- TrackingDevice: equipment attached to vehicles/shipments -->
+    <owl:Class rdf:about="&tl;TrackingDevice">
+        <rdfs:label xml:lang="en">Tracking Device</rdfs:label>
+        <rdfs:comment xml:lang="en">An electronic device used to monitor location or condition of a vehicle or shipment.</rdfs:comment>
+        <rdfs:subClassOf rdf:resource="&tl;PhysicalEntity"/>
+    </owl:Class>
+
+    <owl:Class rdf:about="&tl;GPSTracker">
+        <rdfs:label xml:lang="en">GPS Tracker</rdfs:label>
+        <rdfs:comment xml:lang="en">A satellite-based location tracking unit.</rdfs:comment>
+        <rdfs:subClassOf rdf:resource="&tl;TrackingDevice"/>
+    </owl:Class>
+
+    <owl:Class rdf:about="&tl;RFIDScanner">
+        <rdfs:label xml:lang="en">RFID Scanner</rdfs:label>
+        <rdfs:comment xml:lang="en">A radio-frequency identification reader used for cargo identification.</rdfs:comment>
+        <rdfs:subClassOf rdf:resource="&tl;TrackingDevice"/>
+    </owl:Class>
+
+    <owl:Class rdf:about="&tl;TemperatureLogger">
+        <rdfs:label xml:lang="en">Temperature Logger</rdfs:label>
+        <rdfs:comment xml:lang="en">A sensor that logs temperature readings for cold-chain compliance.</rdfs:comment>
+        <rdfs:subClassOf rdf:resource="&tl;TrackingDevice"/>
+    </owl:Class>
+
+
+    <!-- ======================================================
+         CLASSES — PERSON HIERARCHY
+         ====================================================== -->
+
+    <owl:Class rdf:about="&tl;LogisticsManager">
+        <rdfs:label xml:lang="en">Logistics Manager</rdfs:label>
+        <rdfs:comment xml:lang="en">The primary administrator who oversees the logistics network and operations.</rdfs:comment>
+        <rdfs:subClassOf rdf:resource="&tl;Person"/>
+    </owl:Class>
+
+    <owl:Class rdf:about="&tl;Driver">
+        <rdfs:label xml:lang="en">Driver</rdfs:label>
+        <rdfs:comment xml:lang="en">A person who operates a ground vehicle for cargo transport.</rdfs:comment>
+        <rdfs:subClassOf rdf:resource="&tl;Person"/>
+    </owl:Class>
+
+    <owl:Class rdf:about="&tl;WarehouseOperator">
+        <rdfs:label xml:lang="en">Warehouse Operator</rdfs:label>
+        <rdfs:comment xml:lang="en">A person responsible for goods handling within a facility.</rdfs:comment>
+        <rdfs:subClassOf rdf:resource="&tl;Person"/>
+    </owl:Class>
+
+    <owl:Class rdf:about="&tl;Customer">
+        <rdfs:label xml:lang="en">Customer</rdfs:label>
+        <rdfs:comment xml:lang="en">A person or organisation that sends or receives shipments.</rdfs:comment>
+        <rdfs:subClassOf rdf:resource="&tl;Person"/>
+        <owl:disjointWith rdf:resource="&tl;Driver"/>
+    </owl:Class>
+
+
+    <!-- ======================================================
+         CLASSES — ABSTRACT HIERARCHY
+         ====================================================== -->
+
+    <!-- Shipment -->
+    <owl:Class rdf:about="&tl;Shipment">
+        <rdfs:label xml:lang="en">Shipment</rdfs:label>
+        <rdfs:comment xml:lang="en">A consignment of goods being transported from an origin to a destination.</rdfs:comment>
+        <rdfs:subClassOf rdf:resource="&tl;AbstractEntity"/>
+    </owl:Class>
+
+    <owl:Class rdf:about="&tl;Parcel">
+        <rdfs:label xml:lang="en">Parcel</rdfs:label>
+        <rdfs:comment xml:lang="en">A small individual package within a shipment.</rdfs:comment>
+        <rdfs:subClassOf rdf:resource="&tl;Shipment"/>
+    </owl:Class>
+
+    <owl:Class rdf:about="&tl;BulkCargo">
+        <rdfs:label xml:lang="en">Bulk Cargo</rdfs:label>
+        <rdfs:comment xml:lang="en">Unpackaged goods transported in large quantities (e.g. grain, oil).</rdfs:comment>
+        <rdfs:subClassOf rdf:resource="&tl;Shipment"/>
+    </owl:Class>
+
+    <owl:Class rdf:about="&tl;HazardousCargo">
+        <rdfs:label xml:lang="en">Hazardous Cargo</rdfs:label>
+        <rdfs:comment xml:lang="en">Goods classified as dangerous and subject to special transport regulations.</rdfs:comment>
+        <rdfs:subClassOf rdf:resource="&tl;Shipment"/>
+    </owl:Class>
+
+    <!-- Route -->
+    <owl:Class rdf:about="&tl;Route">
+        <rdfs:label xml:lang="en">Route</rdfs:label>
+        <rdfs:comment xml:lang="en">A planned path between an origin and a destination for a shipment or vehicle.</rdfs:comment>
+        <rdfs:subClassOf rdf:resource="&tl;AbstractEntity"/>
+    </owl:Class>
+
+    <owl:Class rdf:about="&tl;DomesticRoute">
+        <rdfs:label xml:lang="en">Domestic Route</rdfs:label>
+        <rdfs:comment xml:lang="en">A route contained within a single country.</rdfs:comment>
+        <rdfs:subClassOf rdf:resource="&tl;Route"/>
+    </owl:Class>
+
+    <owl:Class rdf:about="&tl;InternationalRoute">
+        <rdfs:label xml:lang="en">International Route</rdfs:label>
+        <rdfs:comment xml:lang="en">A route that crosses one or more national borders.</rdfs:comment>
+        <rdfs:subClassOf rdf:resource="&tl;Route"/>
+    </owl:Class>
+
+    <!-- Event -->
+    <owl:Class rdf:about="&tl;LogisticsEvent">
+        <rdfs:label xml:lang="en">Logistics Event</rdfs:label>
+        <rdfs:comment xml:lang="en">A discrete occurrence within the logistics workflow that is recorded and tracked.</rdfs:comment>
+        <rdfs:subClassOf rdf:resource="&tl;AbstractEntity"/>
+    </owl:Class>
+
+    <owl:Class rdf:about="&tl;DelayEvent">
+        <rdfs:label xml:lang="en">Delay Event</rdfs:label>
+        <rdfs:comment xml:lang="en">An event indicating that a shipment or vehicle has been delayed.</rdfs:comment>
+        <rdfs:subClassOf rdf:resource="&tl;LogisticsEvent"/>
+    </owl:Class>
+
+    <owl:Class rdf:about="&tl;DeliveryEvent">
+        <rdfs:label xml:lang="en">Delivery Event</rdfs:label>
+        <rdfs:comment xml:lang="en">An event marking the successful delivery of a shipment to its destination.</rdfs:comment>
+        <rdfs:subClassOf rdf:resource="&tl;LogisticsEvent"/>
+    </owl:Class>
+
+    <owl:Class rdf:about="&tl;CustomsClearanceEvent">
+        <rdfs:label xml:lang="en">Customs Clearance Event</rdfs:label>
+        <rdfs:comment xml:lang="en">An event recording that a shipment has passed through customs inspection.</rdfs:comment>
+        <rdfs:subClassOf rdf:resource="&tl;LogisticsEvent"/>
+    </owl:Class>
+
+    <!-- Service -->
+    <owl:Class rdf:about="&tl;LogisticsService">
+        <rdfs:label xml:lang="en">Logistics Service</rdfs:label>
+        <rdfs:comment xml:lang="en">A software or operational service supporting the logistics network.</rdfs:comment>
+        <rdfs:subClassOf rdf:resource="&tl;AbstractEntity"/>
+    </owl:Class>
+
+    <owl:Class rdf:about="&tl;TrackingService">
+        <rdfs:label xml:lang="en">Tracking Service</rdfs:label>
+        <rdfs:comment xml:lang="en">A digital service providing real-time shipment and vehicle tracking.</rdfs:comment>
+        <rdfs:subClassOf rdf:resource="&tl;LogisticsService"/>
+    </owl:Class>
+
+    <owl:Class rdf:about="&tl;FleetManagementService">
+        <rdfs:label xml:lang="en">Fleet Management Service</rdfs:label>
+        <rdfs:comment xml:lang="en">A service for managing vehicle assignments, maintenance, and compliance.</rdfs:comment>
+        <rdfs:subClassOf rdf:resource="&tl;LogisticsService"/>
+    </owl:Class>
+
+    <owl:Class rdf:about="&tl;WarehouseManagementService">
+        <rdfs:label xml:lang="en">Warehouse Management Service</rdfs:label>
+        <rdfs:comment xml:lang="en">A service for managing inventory, storage slots, and facility operations.</rdfs:comment>
+        <rdfs:subClassOf rdf:resource="&tl;LogisticsService"/>
+    </owl:Class>
+
+    <!-- Communication Protocol -->
+    <owl:Class rdf:about="&tl;CommunicationProtocol">
+        <rdfs:label xml:lang="en">Communication Protocol</rdfs:label>
+        <rdfs:comment xml:lang="en">A network or data protocol used by logistics systems and tracking devices to communicate.</rdfs:comment>
+        <rdfs:subClassOf rdf:resource="&tl;AbstractEntity"/>
+    </owl:Class>
+
+    <owl:Class rdf:about="&tl;GPSProtocol">
+        <rdfs:label xml:lang="en">GPS Protocol</rdfs:label>
+        <rdfs:comment xml:lang="en">Satellite-based positioning protocol (NMEA / GPS).</rdfs:comment>
+        <rdfs:subClassOf rdf:resource="&tl;CommunicationProtocol"/>
+    </owl:Class>
+
+    <owl:Class rdf:about="&tl;RFIDProtocol">
+        <rdfs:label xml:lang="en">RFID Protocol</rdfs:label>
+        <rdfs:comment xml:lang="en">Radio-frequency identification protocol for cargo tagging.</rdfs:comment>
+        <rdfs:subClassOf rdf:resource="&tl;CommunicationProtocol"/>
+    </owl:Class>
+
+    <owl:Class rdf:about="&tl;EDIProtocol">
+        <rdfs:label xml:lang="en">EDI Protocol</rdfs:label>
+        <rdfs:comment xml:lang="en">Electronic Data Interchange protocol for inter-company logistics messaging.</rdfs:comment>
+        <rdfs:subClassOf rdf:resource="&tl;CommunicationProtocol"/>
+    </owl:Class>
+
+    <owl:Class rdf:about="&tl;MQTTProtocol">
+        <rdfs:label xml:lang="en">MQTT Protocol</rdfs:label>
+        <rdfs:comment xml:lang="en">Lightweight publish-subscribe messaging protocol used by IoT tracking devices.</rdfs:comment>
+        <rdfs:subClassOf rdf:resource="&tl;CommunicationProtocol"/>
+    </owl:Class>
+
+
+    <!-- ======================================================
+         OBJECT PROPERTIES
+         ====================================================== -->
+
+    <!-- isLocatedAt: Vehicle -> Location -->
+    <owl:ObjectProperty rdf:about="&tl;isLocatedAt">
+        <rdfs:label xml:lang="en">is located at</rdfs:label>
+        <rdfs:comment xml:lang="en">Relates a vehicle or tracking device to its current location.</rdfs:comment>
+        <rdfs:domain rdf:resource="&tl;Vehicle"/>
+        <rdfs:range rdf:resource="&tl;Location"/>
+    </owl:ObjectProperty>
+
+    <!-- hasVehicle: Location -> Vehicle (inverse of isLocatedAt) -->
+    <owl:ObjectProperty rdf:about="&tl;hasVehicle">
+        <rdfs:label xml:lang="en">has vehicle</rdfs:label>
+        <rdfs:comment xml:lang="en">Relates a location to a vehicle currently present there.</rdfs:comment>
+        <owl:inverseOf rdf:resource="&tl;isLocatedAt"/>
+        <rdfs:domain rdf:resource="&tl;Location"/>
+        <rdfs:range rdf:resource="&tl;Vehicle"/>
+    </owl:ObjectProperty>
+
+    <!-- isPartOf: Facility -> Region or Network (transitive) -->
+    <owl:ObjectProperty rdf:about="&tl;isPartOf">
+        <rdfs:label xml:lang="en">is part of</rdfs:label>
+        <rdfs:comment xml:lang="en">Spatial and organisational containment relation.</rdfs:comment>
+        <rdf:type rdf:resource="&owl;TransitiveProperty"/>
+        <rdfs:domain rdf:resource="&tl;Location"/>
+        <rdfs:range rdf:resource="&tl;Location"/>
+    </owl:ObjectProperty>
+
+    <!-- hasPart: inverse of isPartOf -->
+    <owl:ObjectProperty rdf:about="&tl;hasPart">
+        <rdfs:label xml:lang="en">has part</rdfs:label>
+        <owl:inverseOf rdf:resource="&tl;isPartOf"/>
+        <rdf:type rdf:resource="&owl;TransitiveProperty"/>
+        <rdfs:domain rdf:resource="&tl;Location"/>
+        <rdfs:range rdf:resource="&tl;Location"/>
+    </owl:ObjectProperty>
+
+    <!-- isOperatedBy: Vehicle -> Driver -->
+    <owl:ObjectProperty rdf:about="&tl;isOperatedBy">
+        <rdfs:label xml:lang="en">is operated by</rdfs:label>
+        <rdfs:comment xml:lang="en">Relates a vehicle to the driver currently operating it.</rdfs:comment>
+        <rdfs:domain rdf:resource="&tl;Vehicle"/>
+        <rdfs:range rdf:resource="&tl;Driver"/>
+    </owl:ObjectProperty>
+
+    <!-- operates: Driver -> Vehicle (inverse) -->
+    <owl:ObjectProperty rdf:about="&tl;operates">
+        <rdfs:label xml:lang="en">operates</rdfs:label>
+        <owl:inverseOf rdf:resource="&tl;isOperatedBy"/>
+        <rdfs:domain rdf:resource="&tl;Driver"/>
+        <rdfs:range rdf:resource="&tl;Vehicle"/>
+    </owl:ObjectProperty>
+
+    <!-- carriesShipment: Vehicle -> Shipment -->
+    <owl:ObjectProperty rdf:about="&tl;carriesShipment">
+        <rdfs:label xml:lang="en">carries shipment</rdfs:label>
+        <rdfs:comment xml:lang="en">Relates a vehicle to the shipment(s) it is currently transporting.</rdfs:comment>
+        <rdfs:domain rdf:resource="&tl;Vehicle"/>
+        <rdfs:range rdf:resource="&tl;Shipment"/>
+    </owl:ObjectProperty>
+
+    <!-- isCarriedBy: Shipment -> Vehicle (inverse) -->
+    <owl:ObjectProperty rdf:about="&tl;isCarriedBy">
+        <rdfs:label xml:lang="en">is carried by</rdfs:label>
+        <owl:inverseOf rdf:resource="&tl;carriesShipment"/>
+        <rdfs:domain rdf:resource="&tl;Shipment"/>
+        <rdfs:range rdf:resource="&tl;Vehicle"/>
+    </owl:ObjectProperty>
+
+    <!-- followsRoute: Vehicle -> Route -->
+    <owl:ObjectProperty rdf:about="&tl;followsRoute">
+        <rdfs:label xml:lang="en">follows route</rdfs:label>
+        <rdfs:comment xml:lang="en">Indicates the planned route a vehicle is following.</rdfs:comment>
+        <rdfs:domain rdf:resource="&tl;Vehicle"/>
+        <rdfs:range rdf:resource="&tl;Route"/>
+    </owl:ObjectProperty>
+
+    <!-- usesProtocol: TrackingDevice -> CommunicationProtocol -->
+    <owl:ObjectProperty rdf:about="&tl;usesProtocol">
+        <rdfs:label xml:lang="en">uses protocol</rdfs:label>
+        <rdfs:domain rdf:resource="&tl;TrackingDevice"/>
+        <rdfs:range rdf:resource="&tl;CommunicationProtocol"/>
+    </owl:ObjectProperty>
+
+    <!-- equippedWith: Vehicle -> TrackingDevice -->
+    <owl:ObjectProperty rdf:about="&tl;equippedWith">
+        <rdfs:label xml:lang="en">equipped with</rdfs:label>
+        <rdfs:comment xml:lang="en">Relates a vehicle to a tracking device installed on it.</rdfs:comment>
+        <rdfs:domain rdf:resource="&tl;Vehicle"/>
+        <rdfs:range rdf:resource="&tl;TrackingDevice"/>
+    </owl:ObjectProperty>
+
+    <!-- generates: TrackingDevice -> LogisticsEvent -->
+    <owl:ObjectProperty rdf:about="&tl;generates">
+        <rdfs:label xml:lang="en">generates</rdfs:label>
+        <rdfs:domain rdf:resource="&tl;TrackingDevice"/>
+        <rdfs:range rdf:resource="&tl;LogisticsEvent"/>
+    </owl:ObjectProperty>
+
+    <!-- involves: LogisticsEvent -> Person -->
+    <owl:ObjectProperty rdf:about="&tl;involves">
+        <rdfs:label xml:lang="en">involves</rdfs:label>
+        <rdfs:domain rdf:resource="&tl;LogisticsEvent"/>
+        <rdfs:range rdf:resource="&tl;Person"/>
+    </owl:ObjectProperty>
+
+    <!-- hasAccess: Person -> Facility -->
+    <owl:ObjectProperty rdf:about="&tl;hasAccess">
+        <rdfs:label xml:lang="en">has access to</rdfs:label>
+        <rdfs:comment xml:lang="en">A person is authorised to enter or operate in a specific facility.</rdfs:comment>
+        <rdfs:domain rdf:resource="&tl;Person"/>
+        <rdfs:range rdf:resource="&tl;Facility"/>
+    </owl:ObjectProperty>
+
+    <!-- managedBy: LogisticsNetwork -> LogisticsManager -->
+    <owl:ObjectProperty rdf:about="&tl;managedBy">
+        <rdfs:label xml:lang="en">managed by</rdfs:label>
+        <rdfs:domain rdf:resource="&tl;LogisticsNetwork"/>
+        <rdfs:range rdf:resource="&tl;LogisticsManager"/>
+    </owl:ObjectProperty>
+
+    <!-- integratedWith: LogisticsNetwork -> LogisticsService -->
+    <owl:ObjectProperty rdf:about="&tl;integratedWith">
+        <rdfs:label xml:lang="en">integrated with</rdfs:label>
+        <rdfs:comment xml:lang="en">Relates the logistics network to a supporting service platform.</rdfs:comment>
+        <rdfs:domain rdf:resource="&tl;LogisticsNetwork"/>
+        <rdfs:range rdf:resource="&tl;LogisticsService"/>
+    </owl:ObjectProperty>
+
+    <!-- originatesAt: Shipment -> Facility -->
+    <owl:ObjectProperty rdf:about="&tl;originatesAt">
+        <rdfs:label xml:lang="en">originates at</rdfs:label>
+        <rdfs:comment xml:lang="en">The facility from which a shipment departs.</rdfs:comment>
+        <rdfs:domain rdf:resource="&tl;Shipment"/>
+        <rdfs:range rdf:resource="&tl;Facility"/>
+    </owl:ObjectProperty>
+
+    <!-- destinedFor: Shipment -> Facility -->
+    <owl:ObjectProperty rdf:about="&tl;destinedFor">
+        <rdfs:label xml:lang="en">destined for</rdfs:label>
+        <rdfs:comment xml:lang="en">The facility or location where a shipment is to be delivered.</rdfs:comment>
+        <rdfs:domain rdf:resource="&tl;Shipment"/>
+        <rdfs:range rdf:resource="&tl;Location"/>
+    </owl:ObjectProperty>
+
+    <!-- ownedBy: Shipment -> Customer -->
+    <owl:ObjectProperty rdf:about="&tl;ownedBy">
+        <rdfs:label xml:lang="en">owned by</rdfs:label>
+        <rdfs:comment xml:lang="en">The customer who owns the goods being transported.</rdfs:comment>
+        <rdfs:domain rdf:resource="&tl;Shipment"/>
+        <rdfs:range rdf:resource="&tl;Customer"/>
+    </owl:ObjectProperty>
+
+
+    <!-- ======================================================
+         DATATYPE PROPERTIES
+         ====================================================== -->
+
+    <!-- vehicleID -->
+    <owl:DatatypeProperty rdf:about="&tl;vehicleID">
+        <rdfs:label xml:lang="en">vehicle ID</rdfs:label>
+        <rdfs:comment xml:lang="en">A unique identifier for the vehicle (e.g. licence plate or fleet number).</rdfs:comment>
+        <rdfs:domain rdf:resource="&tl;Vehicle"/>
+        <rdfs:range rdf:resource="&xsd;string"/>
+        <rdf:type rdf:resource="&owl;FunctionalProperty"/>
+    </owl:DatatypeProperty>
+
+    <!-- vehicleName -->
+    <owl:DatatypeProperty rdf:about="&tl;vehicleName">
+        <rdfs:label xml:lang="en">vehicle name</rdfs:label>
+        <rdfs:domain rdf:resource="&tl;Vehicle"/>
+        <rdfs:range rdf:resource="&xsd;string"/>
+    </owl:DatatypeProperty>
+
+    <!-- isActive -->
+    <owl:DatatypeProperty rdf:about="&tl;isActive">
+        <rdfs:label xml:lang="en">is active</rdfs:label>
+        <rdfs:comment xml:lang="en">Indicates whether the vehicle is currently in service.</rdfs:comment>
+        <rdfs:domain rdf:resource="&tl;Vehicle"/>
+        <rdfs:range rdf:resource="&xsd;boolean"/>
+    </owl:DatatypeProperty>
+
+    <!-- fuelLevel -->
+    <owl:DatatypeProperty rdf:about="&tl;fuelLevel">
+        <rdfs:label xml:lang="en">fuel level</rdfs:label>
+        <rdfs:comment xml:lang="en">Fuel or charge level of the vehicle as a percentage (0–100).</rdfs:comment>
+        <rdfs:domain rdf:resource="&tl;Vehicle"/>
+        <rdfs:range rdf:resource="&xsd;integer"/>
+    </owl:DatatypeProperty>
+
+    <!-- maxPayloadKg -->
+    <owl:DatatypeProperty rdf:about="&tl;maxPayloadKg">
+        <rdfs:label xml:lang="en">max payload kg</rdfs:label>
+        <rdfs:comment xml:lang="en">Maximum cargo weight capacity of the vehicle in kilograms.</rdfs:comment>
+        <rdfs:domain rdf:resource="&tl;Vehicle"/>
+        <rdfs:range rdf:resource="&xsd;float"/>
+    </owl:DatatypeProperty>
+
+    <!-- currentSpeedKmh -->
+    <owl:DatatypeProperty rdf:about="&tl;currentSpeedKmh">
+        <rdfs:label xml:lang="en">current speed km/h</rdfs:label>
+        <rdfs:comment xml:lang="en">Current travelling speed of the vehicle in kilometres per hour.</rdfs:comment>
+        <rdfs:domain rdf:resource="&tl;Vehicle"/>
+        <rdfs:range rdf:resource="&xsd;float"/>
+    </owl:DatatypeProperty>
+
+    <!-- temperatureReading -->
+    <owl:DatatypeProperty rdf:about="&tl;temperatureReading">
+        <rdfs:label xml:lang="en">temperature reading</rdfs:label>
+        <rdfs:comment xml:lang="en">Current internal temperature reading in degrees Celsius (cold-chain monitoring).</rdfs:comment>
+        <rdfs:domain rdf:resource="&tl;TemperatureLogger"/>
+        <rdfs:range rdf:resource="&xsd;float"/>
+    </owl:DatatypeProperty>
+
+    <!-- isOnline -->
+    <owl:DatatypeProperty rdf:about="&tl;isOnline">
+        <rdfs:label xml:lang="en">is online</rdfs:label>
+        <rdfs:comment xml:lang="en">Indicates whether the tracking device is currently connected to the network.</rdfs:comment>
+        <rdfs:domain rdf:resource="&tl;TrackingDevice"/>
+        <rdfs:range rdf:resource="&xsd;boolean"/>
+    </owl:DatatypeProperty>
+
+    <!-- shipmentID -->
+    <owl:DatatypeProperty rdf:about="&tl;shipmentID">
+        <rdfs:label xml:lang="en">shipment ID</rdfs:label>
+        <rdfs:comment xml:lang="en">A unique tracking number for the shipment.</rdfs:comment>
+        <rdfs:domain rdf:resource="&tl;Shipment"/>
+        <rdfs:range rdf:resource="&xsd;string"/>
+        <rdf:type rdf:resource="&owl;FunctionalProperty"/>
+    </owl:DatatypeProperty>
+
+    <!-- weightKg -->
+    <owl:DatatypeProperty rdf:about="&tl;weightKg">
+        <rdfs:label xml:lang="en">weight kg</rdfs:label>
+        <rdfs:comment xml:lang="en">Total weight of the shipment in kilograms.</rdfs:comment>
+        <rdfs:domain rdf:resource="&tl;Shipment"/>
+        <rdfs:range rdf:resource="&xsd;float"/>
+    </owl:DatatypeProperty>
+
+    <!-- isHazardous -->
+    <owl:DatatypeProperty rdf:about="&tl;isHazardous">
+        <rdfs:label xml:lang="en">is hazardous</rdfs:label>
+        <rdfs:comment xml:lang="en">Flag indicating whether the shipment contains dangerous goods.</rdfs:comment>
+        <rdfs:domain rdf:resource="&tl;Shipment"/>
+        <rdfs:range rdf:resource="&xsd;boolean"/>
+    </owl:DatatypeProperty>
+
+    <!-- facilityName -->
+    <owl:DatatypeProperty rdf:about="&tl;facilityName">
+        <rdfs:label xml:lang="en">facility name</rdfs:label>
+        <rdfs:domain rdf:resource="&tl;Facility"/>
+        <rdfs:range rdf:resource="&xsd;string"/>
+    </owl:DatatypeProperty>
+
+    <!-- facilityCapacityM2 -->
+    <owl:DatatypeProperty rdf:about="&tl;facilityCapacityM2">
+        <rdfs:label xml:lang="en">facility capacity m2</rdfs:label>
+        <rdfs:comment xml:lang="en">Storage or operational floor area of the facility in square metres.</rdfs:comment>
+        <rdfs:domain rdf:resource="&tl;Facility"/>
+        <rdfs:range rdf:resource="&xsd;float"/>
+    </owl:DatatypeProperty>
+
+    <!-- personName -->
+    <owl:DatatypeProperty rdf:about="&tl;personName">
+        <rdfs:label xml:lang="en">person name</rdfs:label>
+        <rdfs:domain rdf:resource="&tl;Person"/>
+        <rdfs:range rdf:resource="&xsd;string"/>
+    </owl:DatatypeProperty>
+
+    <!-- routeName -->
+    <owl:DatatypeProperty rdf:about="&tl;routeName">
+        <rdfs:label xml:lang="en">route name</rdfs:label>
+        <rdfs:domain rdf:resource="&tl;Route"/>
+        <rdfs:range rdf:resource="&xsd;string"/>
+    </owl:DatatypeProperty>
+
+    <!-- routeDistanceKm -->
+    <owl:DatatypeProperty rdf:about="&tl;routeDistanceKm">
+        <rdfs:label xml:lang="en">route distance km</rdfs:label>
+        <rdfs:comment xml:lang="en">Total planned distance of the route in kilometres.</rdfs:comment>
+        <rdfs:domain rdf:resource="&tl;Route"/>
+        <rdfs:range rdf:resource="&xsd;float"/>
+    </owl:DatatypeProperty>
+
+    <!-- routeActive -->
+    <owl:DatatypeProperty rdf:about="&tl;routeActive">
+        <rdfs:label xml:lang="en">route active</rdfs:label>
+        <rdfs:domain rdf:resource="&tl;Route"/>
+        <rdfs:range rdf:resource="&xsd;boolean"/>
+    </owl:DatatypeProperty>
+
+    <!-- eventTimestamp -->
+    <owl:DatatypeProperty rdf:about="&tl;eventTimestamp">
+        <rdfs:label xml:lang="en">event timestamp</rdfs:label>
+        <rdfs:domain rdf:resource="&tl;LogisticsEvent"/>
+        <rdfs:range rdf:resource="&xsd;dateTime"/>
+    </owl:DatatypeProperty>
+
+
+    <!-- ======================================================
+         OWL 2 RESTRICTIONS — PROPERTY CONSTRAINTS
+         ====================================================== -->
+
+    <!-- Every LogisticsNetwork must have at least one Facility -->
+    <owl:Class rdf:about="&tl;LogisticsNetwork">
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="&tl;hasPart"/>
+                <owl:someValuesFrom rdf:resource="&tl;Facility"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+
+    <!-- Every Vehicle must be located at exactly one Location -->
+    <owl:Class rdf:about="&tl;Vehicle">
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="&tl;isLocatedAt"/>
+                <owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
+                <owl:onClass rdf:resource="&tl;Location"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+
+    <!-- Every Shipment must originate at at least one Facility -->
+    <owl:Class rdf:about="&tl;Shipment">
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="&tl;originatesAt"/>
+                <owl:someValuesFrom rdf:resource="&tl;Facility"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <!-- and must be destined for at least one Location -->
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="&tl;destinedFor"/>
+                <owl:someValuesFrom rdf:resource="&tl;Location"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+
+    <!-- LogisticsManager must manage at least one LogisticsNetwork -->
+    <owl:Class rdf:about="&tl;LogisticsManager">
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="&tl;hasAccess"/>
+                <owl:someValuesFrom rdf:resource="&tl;Facility"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+
+
+    <!-- ======================================================
+         INDIVIDUALS — EXAMPLE INSTANCES
+         ====================================================== -->
+
+    <!-- Logistics Network instance -->
+    <owl:NamedIndividual rdf:about="&tl;EuroLogNet">
+        <rdf:type rdf:resource="&tl;LogisticsNetwork"/>
+        <rdfs:label xml:lang="en">EuroLog Transportation Network</rdfs:label>
+    </owl:NamedIndividual>
+
+    <!-- Regions -->
+    <owl:NamedIndividual rdf:about="&tl;NorthernRegion">
+        <rdf:type rdf:resource="&tl;Region"/>
+        <rdfs:label xml:lang="en">Northern Europe Region</rdfs:label>
+        <tl:isPartOf rdf:resource="&tl;EuroLogNet"/>
+    </owl:NamedIndividual>
+
+    <owl:NamedIndividual rdf:about="&tl;SouthernRegion">
+        <rdf:type rdf:resource="&tl;Region"/>
+        <rdfs:label xml:lang="en">Southern Europe Region</rdfs:label>
+        <tl:isPartOf rdf:resource="&tl;EuroLogNet"/>
+    </owl:NamedIndividual>
+
+    <!-- Facilities -->
+    <owl:NamedIndividual rdf:about="&tl;WarehouseAmsterdam">
+        <rdf:type rdf:resource="&tl;Warehouse"/>
+        <rdfs:label xml:lang="en">Amsterdam Central Warehouse</rdfs:label>
+        <tl:isPartOf rdf:resource="&tl;NorthernRegion"/>
+        <tl:facilityName rdf:datatype="&xsd;string">Amsterdam Central Warehouse</tl:facilityName>
+        <tl:facilityCapacityM2 rdf:datatype="&xsd;float">12000.0</tl:facilityCapacityM2>
+    </owl:NamedIndividual>
+
+    <owl:NamedIndividual rdf:about="&tl;DistCenterMilan">
+        <rdf:type rdf:resource="&tl;DistributionCenter"/>
+        <rdfs:label xml:lang="en">Milan Distribution Center</rdfs:label>
+        <tl:isPartOf rdf:resource="&tl;SouthernRegion"/>
+        <tl:facilityName rdf:datatype="&xsd;string">Milan Distribution Center</tl:facilityName>
+        <tl:facilityCapacityM2 rdf:datatype="&xsd;float">8500.0</tl:facilityCapacityM2>
+    </owl:NamedIndividual>
+
+    <owl:NamedIndividual rdf:about="&tl;PortRotterdam">
+        <rdf:type rdf:resource="&tl;Port"/>
+        <rdfs:label xml:lang="en">Port of Rotterdam</rdfs:label>
+        <tl:isPartOf rdf:resource="&tl;NorthernRegion"/>
+        <tl:facilityName rdf:datatype="&xsd;string">Port of Rotterdam</tl:facilityName>
+        <tl:facilityCapacityM2 rdf:datatype="&xsd;float">50000.0</tl:facilityCapacityM2>
+    </owl:NamedIndividual>
+
+    <owl:NamedIndividual rdf:about="&tl;CustomsBorderFrance">
+        <rdf:type rdf:resource="&tl;CustomsCheckpoint"/>
+        <rdfs:label xml:lang="en">French Border Customs Checkpoint</rdfs:label>
+        <tl:isPartOf rdf:resource="&tl;SouthernRegion"/>
+        <tl:facilityName rdf:datatype="&xsd;string">French Border Customs</tl:facilityName>
+    </owl:NamedIndividual>
+
+    <owl:NamedIndividual rdf:about="&tl;DeliveryHubLisbon">
+        <rdf:type rdf:resource="&tl;DeliveryHub"/>
+        <rdfs:label xml:lang="en">Lisbon Last-Mile Delivery Hub</rdfs:label>
+        <tl:isPartOf rdf:resource="&tl;SouthernRegion"/>
+        <tl:facilityName rdf:datatype="&xsd;string">Lisbon Delivery Hub</tl:facilityName>
+        <tl:facilityCapacityM2 rdf:datatype="&xsd;float">2200.0</tl:facilityCapacityM2>
+    </owl:NamedIndividual>
+
+    <!-- Vehicles -->
+    <owl:NamedIndividual rdf:about="&tl;Truck_NL_001">
+        <rdf:type rdf:resource="&tl;Truck"/>
+        <rdfs:label xml:lang="en">Dutch Long-Haul Truck 001</rdfs:label>
+        <tl:vehicleID rdf:datatype="&xsd;string">NL-TRK-001</tl:vehicleID>
+        <tl:vehicleName rdf:datatype="&xsd;string">Volvo FH16 001</tl:vehicleName>
+        <tl:isActive rdf:datatype="&xsd;boolean">true</tl:isActive>
+        <tl:fuelLevel rdf:datatype="&xsd;integer">78</tl:fuelLevel>
+        <tl:maxPayloadKg rdf:datatype="&xsd;float">24000.0</tl:maxPayloadKg>
+        <tl:currentSpeedKmh rdf:datatype="&xsd;float">88.5</tl:currentSpeedKmh>
+        <tl:isLocatedAt rdf:resource="&tl;NorthernRegion"/>
+        <tl:equippedWith rdf:resource="&tl;GPS_Truck001"/>
+        <tl:followsRoute rdf:resource="&tl;Route_NL_to_IT"/>
+    </owl:NamedIndividual>
+
+    <owl:NamedIndividual rdf:about="&tl;Van_PT_001">
+        <rdf:type rdf:resource="&tl;Van"/>
+        <rdfs:label xml:lang="en">Lisbon Delivery Van 001</rdfs:label>
+        <tl:vehicleID rdf:datatype="&xsd;string">PT-VAN-001</tl:vehicleID>
+        <tl:vehicleName rdf:datatype="&xsd;string">Mercedes Sprinter PT-001</tl:vehicleName>
+        <tl:isActive rdf:datatype="&xsd;boolean">true</tl:isActive>
+        <tl:fuelLevel rdf:datatype="&xsd;integer">55</tl:fuelLevel>
+        <tl:maxPayloadKg rdf:datatype="&xsd;float">1200.0</tl:maxPayloadKg>
+        <tl:currentSpeedKmh rdf:datatype="&xsd;float">42.0</tl:currentSpeedKmh>
+        <tl:isLocatedAt rdf:resource="&tl;DeliveryHubLisbon"/>
+        <tl:equippedWith rdf:resource="&tl;GPS_Van001"/>
+        <tl:followsRoute rdf:resource="&tl;Route_Lisbon_Local"/>
+        <tl:isOperatedBy rdf:resource="&tl;Driver_Carlos"/>
+    </owl:NamedIndividual>
+
+    <owl:NamedIndividual rdf:about="&tl;RefrigVehicle_IT_001">
+        <rdf:type rdf:resource="&tl;RefrigeratedVehicle"/>
+        <rdfs:label xml:lang="en">Milan Refrigerated Truck 001</rdfs:label>
+        <tl:vehicleID rdf:datatype="&xsd;string">IT-REF-001</tl:vehicleID>
+        <tl:vehicleName rdf:datatype="&xsd;string">DAF XF Reefer IT-001</tl:vehicleName>
+        <tl:isActive rdf:datatype="&xsd;boolean">true</tl:isActive>
+        <tl:fuelLevel rdf:datatype="&xsd;integer">91</tl:fuelLevel>
+        <tl:maxPayloadKg rdf:datatype="&xsd;float">18000.0</tl:maxPayloadKg>
+        <tl:isLocatedAt rdf:resource="&tl;DistCenterMilan"/>
+        <tl:equippedWith rdf:resource="&tl;TempLogger_Refrig001"/>
+        <tl:carriesShipment rdf:resource="&tl;Shipment_COLD_001"/>
+    </owl:NamedIndividual>
+
+    <owl:NamedIndividual rdf:about="&tl;ContainerShip_ROT_001">
+        <rdf:type rdf:resource="&tl;ContainerShip"/>
+        <rdfs:label xml:lang="en">Rotterdam Container Vessel 001</rdfs:label>
+        <tl:vehicleID rdf:datatype="&xsd;string">ROT-SHIP-001</tl:vehicleID>
+        <tl:vehicleName rdf:datatype="&xsd;string">MV EuroFreight I</tl:vehicleName>
+        <tl:isActive rdf:datatype="&xsd;boolean">true</tl:isActive>
+        <tl:maxPayloadKg rdf:datatype="&xsd;float">50000000.0</tl:maxPayloadKg>
+        <tl:isLocatedAt rdf:resource="&tl;PortRotterdam"/>
+        <tl:equippedWith rdf:resource="&tl;GPS_Ship001"/>
+    </owl:NamedIndividual>
+
+    <!-- Tracking Devices -->
+    <owl:NamedIndividual rdf:about="&tl;GPS_Truck001">
+        <rdf:type rdf:resource="&tl;GPSTracker"/>
+        <rdfs:label xml:lang="en">GPS Tracker – Truck NL-001</rdfs:label>
+        <tl:isOnline rdf:datatype="&xsd;boolean">true</tl:isOnline>
+        <tl:usesProtocol rdf:resource="&tl;GPS_Protocol"/>
+    </owl:NamedIndividual>
+
+    <owl:NamedIndividual rdf:about="&tl;GPS_Van001">
+        <rdf:type rdf:resource="&tl;GPSTracker"/>
+        <rdfs:label xml:lang="en">GPS Tracker – Van PT-001</rdfs:label>
+        <tl:isOnline rdf:datatype="&xsd;boolean">true</tl:isOnline>
+        <tl:usesProtocol rdf:resource="&tl;GPS_Protocol"/>
+    </owl:NamedIndividual>
+
+    <owl:NamedIndividual rdf:about="&tl;TempLogger_Refrig001">
+        <rdf:type rdf:resource="&tl;TemperatureLogger"/>
+        <rdfs:label xml:lang="en">Temperature Logger – Refrigerated IT-001</rdfs:label>
+        <tl:isOnline rdf:datatype="&xsd;boolean">true</tl:isOnline>
+        <tl:temperatureReading rdf:datatype="&xsd;float">-4.5</tl:temperatureReading>
+        <tl:usesProtocol rdf:resource="&tl;MQTT_Protocol"/>
+    </owl:NamedIndividual>
+
+    <owl:NamedIndividual rdf:about="&tl;GPS_Ship001">
+        <rdf:type rdf:resource="&tl;GPSTracker"/>
+        <rdfs:label xml:lang="en">GPS Tracker – Container Ship ROT-001</rdfs:label>
+        <tl:isOnline rdf:datatype="&xsd;boolean">true</tl:isOnline>
+        <tl:usesProtocol rdf:resource="&tl;GPS_Protocol"/>
+    </owl:NamedIndividual>
+
+    <!-- Routes -->
+    <owl:NamedIndividual rdf:about="&tl;Route_NL_to_IT">
+        <rdf:type rdf:resource="&tl;InternationalRoute"/>
+        <rdfs:label xml:lang="en">Amsterdam to Milan International Route</rdfs:label>
+        <tl:routeName rdf:datatype="&xsd;string">NL-IT-001</tl:routeName>
+        <tl:routeDistanceKm rdf:datatype="&xsd;float">1285.0</tl:routeDistanceKm>
+        <tl:routeActive rdf:datatype="&xsd;boolean">true</tl:routeActive>
+    </owl:NamedIndividual>
+
+    <owl:NamedIndividual rdf:about="&tl;Route_Lisbon_Local">
+        <rdf:type rdf:resource="&tl;DomesticRoute"/>
+        <rdfs:label xml:lang="en">Lisbon Urban Delivery Route</rdfs:label>
+        <tl:routeName rdf:datatype="&xsd;string">PT-LIS-LOCAL-001</tl:routeName>
+        <tl:routeDistanceKm rdf:datatype="&xsd;float">38.5</tl:routeDistanceKm>
+        <tl:routeActive rdf:datatype="&xsd;boolean">true</tl:routeActive>
+    </owl:NamedIndividual>
+
+    <!-- Shipments -->
+    <owl:NamedIndividual rdf:about="&tl;Shipment_GEN_001">
+        <rdf:type rdf:resource="&tl;Parcel"/>
+        <rdfs:label xml:lang="en">General Parcel Shipment 001</rdfs:label>
+        <tl:shipmentID rdf:datatype="&xsd;string">SHP-GEN-2026-001</tl:shipmentID>
+        <tl:weightKg rdf:datatype="&xsd;float">15.5</tl:weightKg>
+        <tl:isHazardous rdf:datatype="&xsd;boolean">false</tl:isHazardous>
+        <tl:originatesAt rdf:resource="&tl;WarehouseAmsterdam"/>
+        <tl:destinedFor rdf:resource="&tl;DeliveryHubLisbon"/>
+        <tl:ownedBy rdf:resource="&tl;Customer_Maria"/>
+    </owl:NamedIndividual>
+
+    <owl:NamedIndividual rdf:about="&tl;Shipment_COLD_001">
+        <rdf:type rdf:resource="&tl;Parcel"/>
+        <rdfs:label xml:lang="en">Cold-Chain Pharmaceutical Shipment 001</rdfs:label>
+        <tl:shipmentID rdf:datatype="&xsd;string">SHP-COLD-2026-001</tl:shipmentID>
+        <tl:weightKg rdf:datatype="&xsd;float">340.0</tl:weightKg>
+        <tl:isHazardous rdf:datatype="&xsd;boolean">false</tl:isHazardous>
+        <tl:originatesAt rdf:resource="&tl;DistCenterMilan"/>
+        <tl:destinedFor rdf:resource="&tl;DeliveryHubLisbon"/>
+        <tl:ownedBy rdf:resource="&tl;Customer_Maria"/>
+    </owl:NamedIndividual>
+
+    <!-- Communication Protocol Instances -->
+    <owl:NamedIndividual rdf:about="&tl;GPS_Protocol">
+        <rdf:type rdf:resource="&tl;GPSProtocol"/>
+        <rdfs:label xml:lang="en">GPS NMEA 2.3</rdfs:label>
+    </owl:NamedIndividual>
+
+    <owl:NamedIndividual rdf:about="&tl;RFID_Protocol">
+        <rdf:type rdf:resource="&tl;RFIDProtocol"/>
+        <rdfs:label xml:lang="en">RFID ISO 18000-6C</rdfs:label>
+    </owl:NamedIndividual>
+
+    <owl:NamedIndividual rdf:about="&tl;MQTT_Protocol">
+        <rdf:type rdf:resource="&tl;MQTTProtocol"/>
+        <rdfs:label xml:lang="en">MQTT 3.1.1</rdfs:label>
+    </owl:NamedIndividual>
+
+    <owl:NamedIndividual rdf:about="&tl;EDI_Protocol">
+        <rdf:type rdf:resource="&tl;EDIProtocol"/>
+        <rdfs:label xml:lang="en">EDIFACT UN/EDIFACT D.96A</rdfs:label>
+    </owl:NamedIndividual>
+
+    <!-- Persons -->
+    <owl:NamedIndividual rdf:about="&tl;Manager_Ahmed">
+        <rdf:type rdf:resource="&tl;LogisticsManager"/>
+        <rdfs:label xml:lang="en">Ahmed</rdfs:label>
+        <tl:personName rdf:datatype="&xsd;string">Ahmed Al-Farsi</tl:personName>
+        <tl:hasAccess rdf:resource="&tl;WarehouseAmsterdam"/>
+        <tl:hasAccess rdf:resource="&tl;DistCenterMilan"/>
+        <tl:hasAccess rdf:resource="&tl;DeliveryHubLisbon"/>
+    </owl:NamedIndividual>
+
+    <owl:NamedIndividual rdf:about="&tl;Driver_Carlos">
+        <rdf:type rdf:resource="&tl;Driver"/>
+        <rdfs:label xml:lang="en">Carlos</rdfs:label>
+        <tl:personName rdf:datatype="&xsd;string">Carlos Ferreira</tl:personName>
+        <tl:hasAccess rdf:resource="&tl;DeliveryHubLisbon"/>
+    </owl:NamedIndividual>
+
+    <owl:NamedIndividual rdf:about="&tl;Operator_Jan">
+        <rdf:type rdf:resource="&tl;WarehouseOperator"/>
+        <rdfs:label xml:lang="en">Jan</rdfs:label>
+        <tl:personName rdf:datatype="&xsd;string">Jan van der Berg</tl:personName>
+        <tl:hasAccess rdf:resource="&tl;WarehouseAmsterdam"/>
+    </owl:NamedIndividual>
+
+    <owl:NamedIndividual rdf:about="&tl;Customer_Maria">
+        <rdf:type rdf:resource="&tl;Customer"/>
+        <rdfs:label xml:lang="en">Maria</rdfs:label>
+        <tl:personName rdf:datatype="&xsd;string">Maria Santos</tl:personName>
+        <tl:hasAccess rdf:resource="&tl;DeliveryHubLisbon"/>
+    </owl:NamedIndividual>
+
+    <!-- Services -->
+    <owl:NamedIndividual rdf:about="&tl;TrackingServiceInstance">
+        <rdf:type rdf:resource="&tl;TrackingService"/>
+        <rdfs:label xml:lang="en">EuroLog Real-Time Tracking Platform</rdfs:label>
+        <tl:integratedWith rdf:resource="&tl;EuroLogNet"/>
+    </owl:NamedIndividual>
+
+    <owl:NamedIndividual rdf:about="&tl;FleetService">
+        <rdf:type rdf:resource="&tl;FleetManagementService"/>
+        <rdfs:label xml:lang="en">EuroLog Fleet Manager</rdfs:label>
+        <tl:integratedWith rdf:resource="&tl;EuroLogNet"/>
+    </owl:NamedIndividual>
+
+    <owl:NamedIndividual rdf:about="&tl;WMSService">
+        <rdf:type rdf:resource="&tl;WarehouseManagementService"/>
+        <rdfs:label xml:lang="en">EuroLog WMS</rdfs:label>
+        <tl:integratedWith rdf:resource="&tl;EuroLogNet"/>
+    </owl:NamedIndividual>
+
+    <!-- Logistics Events -->
+    <owl:NamedIndividual rdf:about="&tl;DelayEvent_001">
+        <rdf:type rdf:resource="&tl;DelayEvent"/>
+        <rdfs:label xml:lang="en">Border Delay – French Customs 2026-05-12</rdfs:label>
+        <tl:eventTimestamp rdf:datatype="&xsd;dateTime">2026-05-12T14:20:00</tl:eventTimestamp>
+        <tl:involves rdf:resource="&tl;Driver_Carlos"/>
+    </owl:NamedIndividual>
+
+    <owl:NamedIndividual rdf:about="&tl;DeliveryEvent_001">
+        <rdf:type rdf:resource="&tl;DeliveryEvent"/>
+        <rdfs:label xml:lang="en">Successful Delivery – Lisbon Hub 2026-05-13</rdfs:label>
+        <tl:eventTimestamp rdf:datatype="&xsd;dateTime">2026-05-13T10:05:00</tl:eventTimestamp>
+        <tl:involves rdf:resource="&tl;Customer_Maria"/>
+    </owl:NamedIndividual>
+
+    <owl:NamedIndividual rdf:about="&tl;CustomsEvent_001">
+        <rdf:type rdf:resource="&tl;CustomsClearanceEvent"/>
+        <rdfs:label xml:lang="en">Customs Cleared – France Border 2026-05-12</rdfs:label>
+        <tl:eventTimestamp rdf:datatype="&xsd;dateTime">2026-05-12T17:45:00</tl:eventTimestamp>
+        <tl:involves rdf:resource="&tl;Manager_Ahmed"/>
+    </owl:NamedIndividual>
+
+</rdf:RDF>
